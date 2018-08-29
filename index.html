@@ -6,6 +6,7 @@
   	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.css" integrity="sha256-I23rKKBc0+Qh38KLk0F8kfmLoQQ9F4dS0f8064Jfu8I=" crossorigin="anonymous" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js" integrity="sha256-o/UXdF4sFrbgV5UCIWF5ca7VMLDdplhzA4knJ4nFsc0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
     <style id="page-inline-css" type="text/css">
@@ -24,7 +25,13 @@
       .swiper-container {
         width: 100%;
         height: 350px;
+        background: #000;
       }
+      @media only screen and (max-width: 600px) {
+    		.swiper-container {
+        	height: 450px;
+      	}
+			}
       .swiper-slide {
         text-align: center;
         font-size: 18px;
@@ -56,13 +63,13 @@
       .swiper-content {
         position: relative;
         display: block;
-        overflow: visible;
+        overflow: hidden;
         z-index: 5;
-        white-space: nowrap;
         font-weight: 400;
         letter-spacing: 0px;
         font-family: Roboto;
         opacity: 1;
+        padding: 10px 40px 20px 40px;
       }
       .swiper-content strong {
         font-weight: 600;
@@ -74,12 +81,10 @@
         border-width: 0px;
         margin: 0px;
         padding: 0 0 10px 0;
-        min-width: 688px;
-        max-width: 688px;
-        min-height: 97px;
-        max-height: 97px;
       }
       .swiper-content-button {
+        float: left;
+        white-space: nowrap;
         min-width: 229px;
         max-width: 229px;
         font-size: 16px;
@@ -93,18 +98,43 @@
         box-shadow: rgb(153, 153, 153) 0px 0px 0px 0px;
         box-sizing: border-box;
         cursor: pointer;
-        margin: 0px;
+        margin: 0 10px 0 0;
         padding: 12px 35px;
         min-height: 0px;
         max-height: none;
       }
-      .swiper-content-button a {
+      a.swiper-content-button, .swiper-content-button a {
         text-decoration: none;
         color: inherit;
       }
       .swiper-content-button:hover {
         background-color: #fff !important;
         color: #000 !important;
+      }
+      .waiting {
+        font-size: 42px;
+      }
+			.waiting:after {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        -webkit-animation: ellipsis steps(6, end) 1.5s infinite 400ms;
+     		-moz-animation: ellipsis steps(6, end) 1.5s infinite 400ms;
+     		animation: ellipsis steps(6, end) 1.5s infinite 400ms;
+        content: "\2026";
+        width: 0px;
+      }
+
+      @keyframes ellipsis {
+        to {
+          width: 1.25em;    
+        }
+      }
+
+      @-webkit-keyframes ellipsis {
+        to {
+          width: 1.25em;    
+        }
       }
     </style>
   </head>
@@ -116,49 +146,24 @@
     <div class="swiper-container">
         <!-- Additional required wrapper -->
         <div id="diary-slides" class="swiper-wrapper">
-          
-            <!-- <div class="swiper-slide">
-              <div class="swiper-content">
-                <div class="swiper-content-header">
-                  <strong>Open Event 1</strong> <br>6pm - 8pm, Friday 27th April 2018 </div>
-              </div>
-              <div class="swiper-content">
-                <div class="swiper-content-button">Request a prospectus</div>
-              </div>
-          	</div>
-            <div class="swiper-slide">
-          		<div class="swiper-content">
-                <div class="swiper-content-header">
-                  <strong>Open Event 2</strong> <br>6pm - 8pm, Friday 27th April 2018 </div>
-              </div>
-              <div class="swiper-content">
-                <div class="swiper-content-button">Request a prospectus</div>
-              </div>
-          	</div>
-            <div class="swiper-slide">
-          		<div class="swiper-content">
-                <div class="swiper-content-header">
-                  <strong>Open Event 3</strong> <br>6pm - 8pm, Friday 27th April 2018 </div>
-              </div>
-              <div class="swiper-content">
-                <div class="swiper-content-button">Request a prospectus</div>
-              </div>
-          </div> -->
-        </div>
+          <div class="swiper-slide">
+            <div class="waiting"></div>
+          </div>
+      	</div>
+      
         <!-- If we need pagination -->
         <div class="swiper-pagination swiper-button-white"></div>
 
         <!-- If we need navigation buttons -->
         <div class="swiper-button swiper-button-prev swiper-button-white"></div>
         <div class="swiper-button swiper-button-next swiper-button-white"></div>
-
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/js/swiper.js" integrity="sha256-o7yDjDHWk2mV1DlZ+RGyve6aaUOYwV2Rkp6I9M2GMzI=" crossorigin="anonymous"></script>
       <script id="diary">
         var _loadDiary = function() {
           
           var API_KEY = "AIzaSyCvS0KNzMYIm971547si4lOkr11_8WUNgQ";
-          var CALENDAR_ID = "izorian.co.uk_ncscsj55h9insaov3l4bjltj2c@group.calendar.google.com";
+          var CALENDAR_ID = window.location.hash && window.location.hash.indexOf("@") > 0 ? window.location.hash.replace("#", "") : "izorian.co.uk_ncscsj55h9insaov3l4bjltj2c@group.calendar.google.com";
           
           var START = moment().subtract(2, "days").startOf("day").toDate().toISOString();
           var LIMIT = "5";
@@ -189,8 +194,10 @@
               return moment(dt).format("ha");
             };
             
+            var _wrapper = $("#diary-slides").empty();
+            
             if (data.items && data.items.length > 0) {
-              var _wrapper = $("#diary-slides");
+              
               for (var i = 0; i < data.items.length; i++) { 
               	var _item = data.items[i];
                 var _slide = $("<div />", {class: "swiper-slide"});
@@ -223,9 +230,7 @@
                   console.log("Description:", _description);
                   for (var j = 0; j < _description.length; j++) { 
                     if (_description[j].nodeName == "A") {
-                      var _button = $("<div />", {class: "swiper-content-button"}).appendTo(_content);
-                      _button.append(_description[j]);
-                      break;
+                      $(_description[j]).attr("target", "_blank").addClass("swiper-content-button").appendTo(_content);
                     }
                   }
                 }
