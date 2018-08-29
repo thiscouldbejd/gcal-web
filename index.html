@@ -4,19 +4,10 @@
     <meta charset="utf-8">
   	<title>Banner Test</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-  </head>
-  <body style="padding:0;margin:0">
-    
-    <!-- Slider main container -->
-    <div class="swiper-container">
-      <link href="https://fonts.googleapis.com/css?family=Roboto:700%2C400%2C500" rel="stylesheet" property="stylesheet" type="text/css" media="all">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.css" integrity="sha256-I23rKKBc0+Qh38KLk0F8kfmLoQQ9F4dS0f8064Jfu8I=" crossorigin="anonymous" />
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js" integrity="sha256-o/UXdF4sFrbgV5UCIWF5ca7VMLDdplhzA4knJ4nFsc0=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
-      <style id="page-inline-css" type="text/css">
-        html, body {
+    <link href="https://fonts.googleapis.com/css?family=Roboto:700%2C400%2C500" rel="stylesheet" property="stylesheet" type="text/css" media="all">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <style id="page-inline-css" type="text/css">
+      html, body {
           position: relative;
           height: 100%;
         }
@@ -28,6 +19,17 @@
           margin: 0;
           padding: 0;
         }
+    </style>
+  </head>
+  <body style="padding:0;margin:0">
+    
+    <!-- Slider main container -->
+    <div class="swiper-container">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.3.5/css/swiper.css" integrity="sha256-I23rKKBc0+Qh38KLk0F8kfmLoQQ9F4dS0f8064Jfu8I=" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js" integrity="sha256-o/UXdF4sFrbgV5UCIWF5ca7VMLDdplhzA4knJ4nFsc0=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
+      <style id="div-inline-css" type="text/css">
         .swiper-container {
           width: 100%;
           height: 350px;
@@ -38,7 +40,6 @@
           font-size: 18px;
           background: #000;
           color: #fff;
-          /* Center slide text vertically */
           display: -webkit-box;
           display: -ms-flexbox;
           display: -webkit-flex;
@@ -199,20 +200,20 @@
                 return moment(dt).format("ha");
               };
 
-              var _wrapper = $("#diary-slides").empty();
+              var _wrapper = jQuery("#diary-slides").empty();
 
               if (data.items && data.items.length > 0) {
 
                 for (var i = 0; i < data.items.length; i++) { 
                   var _item = data.items[i];
-                  var _slide = $("<div />", {class: "swiper-slide"});
-                  var _content = $("<div />", {class: "swiper-content"}).appendTo(_slide);
+                  var _slide = jQuery("<div />", {class: "swiper-slide"});
+                  var _content = jQuery("<div />", {class: "swiper-content"}).appendTo(_slide);
 
                   if (_item.summary) {
 
-                    var _header = $("<div />", {class: "swiper-content-header"}).appendTo(_content);
-                    _header.append($("<strong />", {text: _item.summary}));
-                    _header.append($("<br />"));
+                    var _header = jQuery("<div />", {class: "swiper-content-header"}).appendTo(_content);
+                    _header.append(jQuery("<strong />", {text: _item.summary}));
+                    _header.append(jQuery("<br />"));
 
                     if (_item.start.date) {
                       _header.append(_formatDate(_item.start.date));
@@ -235,7 +236,7 @@
                     console.log("Description:", _description);
                     for (var j = 0; j < _description.length; j++) { 
                       if (_description[j].nodeName == "A") {
-                        $(_description[j]).attr("target", "_blank").addClass("swiper-content-button").appendTo(_content);
+                        jQuery(_description[j]).attr("target", "_blank").addClass("swiper-content-button").appendTo(_content);
                       }
                     }
                   }
@@ -260,7 +261,20 @@
             });
           };
 
-          $(document).ready(_loadDiary);
+          if(window.attachEvent) {
+              window.attachEvent("onload", _loadDiary);
+          } else {
+              if(window.onload) {
+                  var curronload = window.onload;
+                  var newonload = function(evt) {
+                      curronload(evt);
+                      _loadDiary(evt);
+                  };
+                  window.onload = newonload;
+              } else {
+                  window.onload = _loadDiary;
+              }
+          }
       </script>
     </div>
     
