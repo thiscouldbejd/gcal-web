@@ -210,7 +210,8 @@
               var _formatDate = function(dt) {
                 return moment(dt).format("dddd MMMM Do YYYY");
               }, _formatTime = function(dt) {
-                return moment(dt).format("ha");
+                var _m = moment(dt);
+                return _m.minute() > 0 ? _m.format("h:mma") : _m.format("ha");
               };
 
               var _wrapper = jQuery("#diary-slides").empty();
@@ -244,7 +245,6 @@
 
                   }
                   if (_item.description) {
-
                     var _description = jQuery.parseHTML(_item.description);
                     console.log("Description:", _description);
                     for (var j = 0; j < _description.length; j++) { 
